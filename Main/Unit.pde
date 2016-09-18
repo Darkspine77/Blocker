@@ -12,7 +12,7 @@ class Unit {
     size = size1;
     player = player1;
     rgb[0] = 0;
-    rgb[1] = 255;
+    rgb[1] = 125;
     rgb[2] = 0;
     if (!player) {
       rgb[0] = 255;
@@ -24,12 +24,27 @@ class Unit {
   } 
 
   void run() {
+    if(player){
+    cover();
+    }
     render(); 
     move();
     collide();
     locate();
   }
-
+  void cover() {
+    for (int i = 0; i<Tiles.size(); i++) {
+      Tile tile = Tiles.get(i);
+      boolean flag1 = xcoord == tile.x && ycoord == tile.y;
+      boolean flag2 = tile.type == 0;
+      if (flag1 && flag2) {
+        tile.type = 1; 
+        tile.rgb[1] = 255;
+        Tiles.set(i,tile);
+        println("changed");
+      }
+    }
+  }
   void locate() {
     for (int i = 0; i<width; i++) {
       if (x > i*20 && x < (i+1)*20) {
@@ -117,22 +132,27 @@ class Unit {
       x += xvel;
       y += yvel;
     } else {
+      println(xcoord,ycoord);
       if (keyPressed) { 
         if (key == 'a') { 
           xvel = -3;
           yvel = 0;
+          y = ((ycoord-1)* 20) + 10;
         }
         if (key =='d') {
           xvel = 3;
           yvel = 0;
+          y = ((ycoord-1)* 20) + 10;
         }
         if (key == 'w') {
           xvel = 0;
           yvel = -3;
+          x = ((xcoord-1)* 20) + 10;
         }
         if (key == 's') {
           xvel = 0;
           yvel = 3;
+          x = ((xcoord-1)* 20) + 10;
         }
       }
       x += xvel;
