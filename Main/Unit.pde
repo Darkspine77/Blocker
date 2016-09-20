@@ -12,8 +12,8 @@ class Unit {
     size = size1;
     player = player1;
     rgb[0] = 0;
-    rgb[1] = 125;
-    rgb[2] = 0;
+    rgb[1] = 0;
+    rgb[2] = 255;
     if (!player) {
       rgb[0] = 255;
       rgb[1] = 0;
@@ -24,8 +24,8 @@ class Unit {
   } 
 
   void run() {
-    if(player){
-    cover();
+    if (player) {
+      cover();
     }
     render(); 
     move();
@@ -38,10 +38,10 @@ class Unit {
       boolean flag1 = xcoord == tile.x && ycoord == tile.y;
       boolean flag2 = tile.type == 0;
       if (flag1 && flag2) {
+        tilesCovered += 1;
         tile.type = 1; 
         tile.rgb[1] = 255;
-        Tiles.set(i,tile);
-        println("changed");
+        Tiles.set(i, tile);
       }
     }
   }
@@ -92,7 +92,7 @@ class Unit {
     if (player) {  
       for (int i = 0; i<Enemies.size (); i++) {
         if (inRange(Enemies.get(i).x, Enemies.get(i).y, x, y, size, size)) {
-          println("Game over");
+          updateGame(3);
         }
       }
     }
@@ -132,7 +132,6 @@ class Unit {
       x += xvel;
       y += yvel;
     } else {
-      println(xcoord,ycoord);
       if (keyPressed) { 
         if (key == 'a') { 
           xvel = -3;
